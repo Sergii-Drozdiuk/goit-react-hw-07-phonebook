@@ -1,14 +1,15 @@
 import { PiMagnifyingGlassLight } from 'react-icons/pi';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFilter, getFilter } from '../redux/filterSlice';
+import { changeFilter } from '../redux/filterSlice';
+import { selectFilter } from '../redux/selectors';
 
 export const Filter = () => {
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
+  console.log('filter');
 
   return (
     <label className='mb-2 flex flex-col items-center gap-2'>
-      {' '}
       <div className='flex flex-row items-center gap-2'>
         <PiMagnifyingGlassLight />
         <input

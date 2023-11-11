@@ -1,28 +1,37 @@
 import { PiUserCircleMinusDuotone } from 'react-icons/pi';
 import { useDispatch, useSelector } from 'react-redux';
-import { delContact, getContacts } from '../redux/contactsSlice';
-import { getFilter } from '../redux/filterSlice';
+import { selectVisibleContacts } from '../redux/selectors';
+import { delContact } from '../redux/operations';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { fetchContacts } from '../redux/operations';
+import { useEffect } from 'react';
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
-  const visibleContacts = filter
-    ? contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
-    : contacts;
+  console.log('list');
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const visibleContacts = useSelector(selectVisibleContacts);
+  const deleteContact = (id, name) => {
+    Notify.success(`${name} has been successfully deleted from your contacts`);
+    return dispatch(delContact(id));
+  };
 
   return (
     <ul>
       {visibleContacts.length ? (
-        visibleContacts.map(({ id, name, number }) => (
+        visibleContacts.map(({ id, name, phone }) => (
           <li key={id} className='mb-2 flex items-center justify-between gap-2'>
             <div className='flex items-center justify-between w-10/12'>
-              <span className='w-1/2 overflow-hidden max-[375px]:text-xs'>{name}:</span>
-              <span className='overflow-hidden max-[375px]:text-xs'>{number}</span>
+              <span className='w-1/2 text-sm overflow-hidden max-[375px]:text-xs'>{name}:</span>
+              <span className='overflow-hidden text-sm max-[375px]:text-xs'>{phone}</span>
             </div>
             <button
               type='button'
-              onClick={() => dispatch(delContact(id))}
+              onClick={() => deleteContact(id, name)}
               className='flex rounded-lg bg-rose-500 px-2 py-[2px] hover:bg-rose-700 hover:stroke-black active:bg-rose-700 max-[375px]:text-xs max-[375px]:gap-1'
             >
               <PiUserCircleMinusDuotone />
