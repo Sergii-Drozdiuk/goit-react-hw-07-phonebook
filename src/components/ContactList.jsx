@@ -1,14 +1,13 @@
 import { PiUserCircleMinusDuotone } from 'react-icons/pi';
 import { useDispatch, useSelector } from 'react-redux';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { useEffect } from 'react';
 import { selectVisibleContacts } from '../redux/selectors';
 import { delContact } from '../redux/operations';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchContacts } from '../redux/operations';
-import { useEffect } from 'react';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  console.log('list');
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -21,7 +20,7 @@ export const ContactList = () => {
   };
 
   return (
-    <ul>
+    <ul className='max-h-[55vh] overflow-y-auto scrollbar-none'>
       {visibleContacts.length ? (
         visibleContacts.map(({ id, name, phone }) => (
           <li key={id} className='mb-2 flex items-center justify-between gap-2'>

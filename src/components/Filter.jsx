@@ -6,7 +6,6 @@ import { selectFilter } from '../redux/selectors';
 export const Filter = () => {
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
-  console.log('filter');
 
   return (
     <label className='mb-2 flex flex-col items-center gap-2'>
